@@ -17,9 +17,9 @@
 </head>
 
 <body style="background-color: whitesmoke;">
-  <h1 id="hello" class="heading" style="color: red;">Hello World!</h1>
+  <!-- <h1 id="hello" class="heading" style="color: red;">Hello World!</h1> -->
 
-  <pre id="rabbit" class="droppable">
+  <pre id="rabbit" class="droppable" style="display: inline-block;">
   |\   /|
    \|_|/
    /. .\
@@ -38,6 +38,48 @@
   </div>
   
   <script>
+
+    let step = 0
+    let rabbitAtTheRight = false
+    let rabbitAtTheLeft = true
+
+    let moveRight = setInterval(() => {
+      if (rabbitAtTheLeft) {
+        rabbit.style.marginLeft = step + 'px'
+        step += 1
+      }
+    }, 1);
+
+    let reverse = setInterval(() => {
+      if (parseInt(rabbit.style.marginLeft, 10) + rabbit.offsetWidth >= document.documentElement.offsetWidth) {
+        rabbitAtTheLeft = false
+        rabbitAtTheRight = true
+        console.log(step)
+      }
+    }, 1);
+
+    let moveLeft= setInterval(() => {
+      if (rabbitAtTheRight) {
+        rabbit.style.marginLeft = step + 'px'
+        step -= 1
+        if (step <= 0) {
+          rabbitAtTheRight = false
+          rabbitAtTheLeft = true
+          console.log(step)
+        }
+      }
+    }, 1);
+
+
+
+
+
+
+
+
+
+
+
     let ow = container.querySelector('img').offsetWidth
     thumb.addEventListener('mousedown', function (event) {
       thumb.ondragstart = function () {
