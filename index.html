@@ -93,9 +93,10 @@
       }
     }, 1);
 
-    //Zoom for PC
+    //Zoom 
     let ow = container.querySelector('img').offsetWidth
-    thumb.addEventListener('mousedown', function (event) {
+    thumb.addEventListener('pointerdown', function (event) {
+      thumb.setPointerCapture(event.pointerId)
       thumb.ondragstart = function () {
         return false
       }
@@ -137,79 +138,19 @@
         moveAt(event.clientX)
       }
 
-      document.addEventListener('mousemove', onMouseMove)
-      document.addEventListener('mouseup', onMouseUp)
+      thumb.addEventListener('pointermove', onMouseMove)
+      thumb.addEventListener('pointerup', onMouseUp)
 
       
 
       function onMouseUp () {
-        document.removeEventListener('mousemove', onMouseMove)
-        document.removeEventListener('mouseup', onMouseUp)
+        thumb.removeEventListener('mousemove', onMouseMove)
+        thumb.removeEventListener('pointerup', onMouseUp)
       }
 
 
 
     })
-
-    //Zoom for touchpad
-    thumb.addEventListener('touchstart', function (event) {
-      thumb.ondragstart = function () {
-        return false
-      }
-      event.preventDefault()
-
-      
-      
-      let shiftX = event.touches[0].clientX - thumb.getBoundingClientRect().left
-
-      function moveAt (clientX) {
-        let newX = clientX - slider.getBoundingClientRect().left - shiftX
-        if (newX < 0) {
-          newX = 0
-        } else if (newX > slider.offsetWidth - thumb.offsetWidth) {
-          newX = slider.offsetWidth - thumb.offsetWidth
-        }
-        thumb.style.left = newX + 'px'
-        zoom(newX)
-      }
-
-      function zoom (newX) {
-        let img = container.querySelector('img')
-        // let percent = newX/(slider.offsetWidth - thumb.offsetWidth) * 100
-        // img.style.maxWidth = percent + '%'
-        let newWidth = newX
-        
-        if (newX < (slider.offsetWidth - thumb.offsetWidth)/2) {
-          img.style.width = ow - ((slider.offsetWidth - thumb.offsetWidth)/2 - newX)*2 + 'px'
-        } else if (newX > (slider.offsetWidth - thumb.offsetWidth)/2) {
-          img.style.width = ow + (newX - (slider.offsetWidth - thumb.offsetWidth)/2)*2 + 'px'
-        } else if (newX = (slider.offsetWidth - thumb.offsetWidth)/2) {
-          img.style.width = ow + 'px'
-        }
-      }
-
-
-
-      moveAt(event.touches[0].clientX)
-
-      function onMouseMove (event) {
-        moveAt(event.touches[0].clientX)
-      }
-
-      document.addEventListener('touchmove', onMouseMove)
-      document.addEventListener('touchend', onMouseUp)
-
-      
-
-      function onMouseUp () {
-        document.removeEventListener('touchmove', onMouseMove)
-        document.removeEventListener('touchend', onMouseUp)
-      }
-
-
-
-    })
-
 
   </script>
 
